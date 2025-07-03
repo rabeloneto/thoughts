@@ -8,13 +8,24 @@ const app = express();
 
 const conn = require("./db/conn");
 
+//models
+const Tought = require('./models/Tought');
+const User = require('./models/User')
+
+//import routes
+const toughtsRoutes = require('./routes/toughtsRoutes');
+const authRoutes = require('./routes/authRoutes')
+
+//import controller
+const ToughtController = require("./controllers/ToughtController");
+
 //template engina
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 
 //receber respostas do body
 app.use(
-    espress.urlencoded({
+    express.urlencoded({
         extended:true
     })
 );
@@ -56,6 +67,13 @@ app.use((req,res,next)=>{
     next()
 })
 
+//routes
+app.use('/toughts', toughtsRoutes);
+app.use('/', authRoutes);
+
+
+
+app.get('/', ToughtController.showToughts)
 
 
 
